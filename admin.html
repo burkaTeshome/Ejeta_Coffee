@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+            if (isLoggedIn !== 'true') {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+            }
+        };
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Menu Items</title>
@@ -24,6 +35,7 @@
             width: 100%;
             background-color: #1c1c1c; /* Slightly lighter black for contrast */
             border-radius: 10px;
+            margin-top: 35px;
             padding: 30px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             display: flex;
@@ -40,6 +52,7 @@
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
+            
             border-radius: 8px;
             border: none;
             font-size: 16px;
@@ -220,17 +233,142 @@
                 padding: 10px;
             }
         }
-        
+       /* Navbar Styles */
+.navbar {
+    width: 100%;
+    background-color: #1c1c1c; /* Dark background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 24px;
+    color: #f1c40f; /* Gold color */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links li a {
+    color: #f1c40f; /* Gold color for links */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.nav-links li a:hover {
+    color: #d4ac0d; /* Darker gold for hover */
+}
+
+/* Hamburger Menu for Mobile */
+.burger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.burger span {
+    display: block;
+    height: 3px;
+    background-color: #f1c40f; /* Gold color */
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        right: -100%;
+        flex-direction: column;
+        background-color: #1c1c1c;
+        width: 100%;
+        text-align: center;
+        transition: right 0.3s ease-in;
+        padding: 15px 0;
+    }
+
+    .nav-links.show {
+        right: 0;
+    }
+
+    .nav-links li {
+        margin-bottom: 20px;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .burger.toggle span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 5px);
+    }
+
+    .burger.toggle span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .burger.toggle span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -5px);
+    }
+}
+
+
     </style>
 </head>
 <body>
+
+  <!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="index.html" class="logo">Ejeta Coffee</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html">Menu</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+        <div class="burger" id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+
 
     <div class="container">
         <h2>Add Menu Item</h2>
         <div class="form-wrapper">
             <form id="addItemForm">
                 <select id="documentId" required>
-                    <option value="" disabled selected>Select Document ID</option>
+                    <option value="" disabled selected>Select Category </option>
                 </select>
                 <input type="text" id="itemName" placeholder="Item Name" required>
                 <input type="text" id="itemPrice" placeholder="Item Price (in Birr)" required>
@@ -278,7 +416,7 @@
         async function loadDocumentIds() {
             const menuRef = collection(db, 'menu');
             const snapshot = await getDocs(menuRef);
-            documentIdSelect.innerHTML = '<option value="" disabled selected>Select Document ID</option>'; // Reset select
+            documentIdSelect.innerHTML = '<option value="" disabled selected>Select Category</option>'; // Reset select
             snapshot.forEach(doc => {
                 const option = document.createElement('option');
                 option.value = doc.id;
@@ -417,6 +555,23 @@
         // Initialize the application
         loadDocumentIds();
         loadMenuItems();
+// Logout Functionality
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', function() {
+    sessionStorage.removeItem('isLoggedIn');
+    window.location.href = 'login.html';
+});
+
+// Burger Menu Toggle
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+
+burger.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+    burger.classList.toggle('toggle');
+});
+
+
     </script>
 </body>
 </html>
