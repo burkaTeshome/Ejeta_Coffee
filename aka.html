@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Menu Items</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212; /* Dark black background */
+            color: #f1c40f; /* Gold color */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .navbar {
+            background-color: #1c1c1c;
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-link {
+            color: #f1c40f;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            color: #d4ac0d;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background-color: #1c1c1c; /* Slightly lighter black for contrast */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            color: #f1c40f;
+            text-align: center;
+            font-weight: 600;
+        }
+        input, button, select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+        input, select {
+            background-color: #2c2c2c; /* Dark input background */
+            color: #fff;
+        }
+        button {
+            background-color: #f1c40f;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #d4ac0d; /* Darker gold for hover effect */
+        }
+        .form-wrapper {
+            width: 100%;
+            max-width: 500px; /* Limit the width of the form */
+            margin-bottom: 40px;
+        }
+        .item-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .document-section {
+            width: 30%; /* Three items per row */
+            background-color: #2c2c2c;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+        .document-title {
+            font-weight: bold;
+            color: #f1c40f;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .item {
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item span {
+            color: #fff;
+        }
+        .item .icon-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .item button {
+            background-color: transparent;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #fff;
+        }
+        .item button.edit-btn {
+            color: #2980b9;
+        }
+        .item button.delete-btn {
+            color: #e74c3c;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        #searchItem {
+            background-color: #2c2c2c;
+            color: #fff;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #1c1c2c;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            width: 80%; /* Could be more or less, depending on screen size */
+            color: #f1c40f; /* Gold color */
+            text-align: center;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-button {
+            background-color: #f1c40f;
+            color: black;
+            border: none;
+            padding: 10px 10px; /* Reduced padding for a smaller button */
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px; /* Slightly smaller font size */
+            margin-top: 10px;
+            transition: background-color 0.3s; /* Smooth transition for hover */
+        }
+
+        .modal-button:hover {
+            background-color: #d4ac0d; /* Darker gold for hover effect */
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #1c1c1c;
+            color: #f1c40f;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            margin-top: auto;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 1024px) {
+            .document-section {
+                width: 45%; /* Two items per row for medium screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .document-section {
+                width: 100%; /* One item per row for small screens */
+            }
+
+            .form-wrapper {
+                max-width: 100%;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-wrapper {
+                padding: 0;
+            }
+
+            .document-section {
+                padding: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#addItem" class="nav-link">Add Item</a>
+        <a href="#menuItems" class="nav-link">Menu Items</a>
+        <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="container">
+        <h2 id="addItem">Add Menu Item</h2>
+        <div class="form-wrapper">
+            <form id="addItemForm">
+                <select id="documentId" required>
+                    <option value="" disabled selected>Select Document ID</option>
+                </select>
+                <input type="text" id="itemName" placeholder="Item Name" required>
+                <input type="text" id="itemPrice" placeholder="Item Price" required>
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+
+        <h2 id="menuItems">Menu Items</h2>
+        <input type="text" id="searchItem" placeholder="Search items...">
+        <div class="item-list" id="itemList">
+            <!-- Items will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Ejeta Coffee. All rights reserved.</p>
+    </footer>
+
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h3 id="modalTitle"></h3>
+            <form id="editItemForm">
+                <input type="text" id="editItemName" placeholder="Item Name" required>
+                <input type="text" id="editItemPrice" placeholder="Item Price" required>
+                <input type="hidden" id="editDocumentId">
+                <input type="hidden" id="editItemId">
+                <button type="submit" class="modal-button">Update Item</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZCHo8ESzH_ivZJGxlC9bjGKnhCFArT-E",
+            authDomain: "ejeta-coffee.firebaseapp.com",
+            projectId: "ejeta-coffee",
+            storageBucket: "ejeta-coffee.appspot.com",
+            messagingSenderId: "767207978097",
+            appId: "1:767207978097:web:3df8271ead1f96d54017d0",
+            measurementId: "G-J2Q31D4ZNX"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Load document IDs into select
+        window.onload = () => {
+            db.collection("yourCollectionName") // Replace with your collection name
+                .get()
+                .then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const option = document.createElement("option");
+                        option.value = doc.id;
+                        option.textContent = doc.id;
+                        document.getElementById("documentId").appendChild(option);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching documents:", error);
+                });
+        };
+
+        // Add item to Firestore
+        document.getElementById("addItemForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const documentId = document.getElementById("documentId").value;
+            const itemName = document.getElementById("itemName").value;
+            const itemPrice = document.getElementById("itemPrice").value;
+
+            db.collection("yourCollectionName").doc(documentId).collection("items").add({
+                name: itemName,
+                price: itemPrice
+            })
+            .then(() => {
+                alert("Item added successfully!");
+                document.getElementById("addItemForm").reset();
+                loadItems();
+            })
+            .catch((error) => {
+                console.error("Error adding item:", error);
+            });
+        });
+
+        // Load items from Firestore
+        function loadItems() {
+            const selectedDocumentId = document.getElementById("documentId").value;
+            if (!selectedDocumentId) return;
+
+            db.collection("yourCollectionName").doc(selectedDocumentId).collection("items").get()
+                .then((snapshot) => {
+                    const itemList = document.getElementById("itemList");
+                    itemList.innerHTML = "";
+                    snapshot.forEach((doc) => {
+                        const item = doc.data();
+                        const itemElement = document.createElement("div");
+                        itemElement.className = "item";
+                        itemElement.innerHTML = `
+                            <span>${item.name} - $${item.price}</span>
+                            <div class="icon-buttons">
+                                <button class="edit-btn" onclick="openModal('${doc.id}', '${selectedDocumentId}', '${item.name}', '${item.price}')">✏️</button>
+                                <button class="delete-btn" onclick="deleteItem('${doc.id}', '${selectedDocumentId}')">❌</button>
+                            </div>
+                        `;
+                        itemList.appendChild(itemElement);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error loading items:", error);
+                });
+        }
+
+        // Search items
+        document.getElementById("searchItem").addEventListener("input", function() {
+            const searchTerm = this.value.toLowerCase();
+            const items = document.querySelectorAll(".item");
+            items.forEach(item => {
+                const itemName = item.textContent.toLowerCase();
+                if (itemName.includes(searchTerm)) {
+                    item.style.display = "flex"; // Show the item
+                } else {
+                    item.style.display = "none"; // Hide the item
+                }
+            });
+        });
+
+        // Open modal for editing
+        function openModal(itemId, documentId, itemName, itemPrice) {
+            document.getElementById("modalTitle").innerText = "Edit Item";
+            document.getElementById("editItemName").value = itemName;
+            document.getElementById("editItemPrice").value = itemPrice;
+            document.getElementById("editDocumentId").value = documentId;
+            document.getElementById("editItemId").value = itemId;
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close modal
+        document.getElementById("closeModal").onclick = function() {
+            document.getElementById("myModal").style.display = "none";
+        };
+
+        // Update item in Firestore
+        document.getElementById("editItemForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const documentId = document.getElementById("editDocumentId").value;
+            const itemId = document.getElementById("editItemId").value;
+            const itemName = document.getElementById("editItemName").value;
+            const itemPrice = document.getElementById("editItemPrice").value;
+
+            db.collection("yourCollectionName").doc(documentId).collection("items").doc(itemId).update({
+                name: itemName,
+                price: itemPrice
+            })
+            .then(() => {
+                alert("Item updated successfully!");
+                document.getElementById("myModal").style.display = "none";
+                loadItems();
+            })
+            .catch((error) => {
+                console.error("Error updating item:", error);
+            });
+        });
+
+        // Delete item from Firestore
+        function deleteItem(itemId, documentId) {
+            if (confirm("Are you sure you want to delete this item?")) {
+                db.collection("yourCollectionName").doc(documentId).collection("items").doc(itemId).delete()
+                .then(() => {
+                    alert("Item deleted successfully!");
+                    loadItems();
+                })
+                .catch((error) => {
+                    console.error("Error deleting item:", error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

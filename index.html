@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ejeta Coffee</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1 class="logo">Ejeta Coffee</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <!-- Hamburger Icon -->
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Welcome to Ejeta Coffee</h2>
+            <p>Serving the best hot and cold drinks, paired with delicious fast food.</p>
+            <a href="#menu" class="cta">Explore Menu</a>
+        </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+        <h2>Our Menu</h2>
+        <p class="menu-subtitle">Delicious offerings for everyone!</p>
+        <div class="menu-grid"></div> <!-- This div must exist -->
+    </section>
+
+   
+    <!-- Footer -->
+   <!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-content">
+            <p>&copy; 2024 Ejeta Coffee | All Rights Reserved</p>
+            <div class="social">
+                <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
+                </a>
+                <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+                </a>
+            </div>
+        </div>
+        <p class="powered-by">Powered by <strong>B-Tech Digital</strong></p>
+    </div>
+</footer>
+
+
+
+
+
+    <script src="scripts.js"></script>
+    <!-- Firebase SDK -->
+
+    <script type="module">
+      // Firebase SDK
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js';
+import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.1.3/firebase-firestore.js';
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDZCHo8ESzH_ivZJGxlC9bjGKnhCFArT-E",
+    authDomain: "ejeta-coffee.firebaseapp.com",
+    projectId: "ejeta-coffee",
+    storageBucket: "ejeta-coffee.appspot.com",
+    messagingSenderId: "767207978097",
+    appId: "1:767207978097:web:3df8271ead1f96d54017d0",
+    measurementId: "G-J2Q31D4ZNX"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const menuGrid = document.querySelector('.menu-grid');
+
+// Function to load menu items from Firestore
+async function loadMenuItems() {
+    const menuRef = collection(db, 'menu'); // Replace 'menu' with your collection name
+    const snapshot = await getDocs(menuRef);
+    
+    snapshot.forEach(doc => {
+        const data = doc.data();
+        const menuItemDiv = document.createElement('div');
+        menuItemDiv.classList.add('menu-item');
+        menuItemDiv.innerHTML = `
+            <img src="${data.imageUrl}" alt="${data.name}">
+            <h3>${data.name}</h3> <!-- Display Document ID as a header -->
+            <ul>
+                ${data.items && Array.isArray(data.items) && data.items.length > 0 ? 
+                    data.items.map(item => `
+                        <li>
+                            <span class="menu-name">${item.name}</span>
+                            <span class="menu-price">${item.price} Birr</span>
+                        </li>
+                    `).join('') : 
+                    '<li>No items available</li>'}
+            </ul>
+        `;
+        menuGrid.appendChild(menuItemDiv);
+    });
+}
+
+// Call the function to load menu items
+document.addEventListener('DOMContentLoaded', loadMenuItems);
+
+
+    </script>
+
+</body>
+</html>
