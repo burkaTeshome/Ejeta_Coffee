@@ -85,7 +85,7 @@ nav ul li a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://github.com/burkaTeshome/Ejeta_Coffee/blob/main/top-view-coffee-cup-coffee-beans-dark-table.jpg?raw=true') no-repeat center center/cover;
+    background: url('https://raw.githubusercontent.com/burkaTeshome/Ejeta_Coffee/refs/heads/main/background.webp') no-repeat center center/cover;
     opacity: 0.3;
     z-index: 1;
 }
