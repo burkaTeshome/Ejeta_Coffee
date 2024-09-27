@@ -530,17 +530,19 @@ h4 {
     border-radius: 8px;
     margin-top: 40px;
     align-items: center;
+    
 }
 
 .delivery-card h4 {
     font-size: 1.5rem;
     color: #FFD700; /* Gold color for the heading */
     margin-bottom: 15px;
+    text-align: center;
 }
-
 .delivery-card p {
     font-size: 1rem;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .delivery-contacts {
@@ -561,6 +563,7 @@ h4 {
     max-width: 250px;
     font-size: 1.1rem;
     transition: background-color 0.3s ease;
+    justify-content: center;
 }
 
 .contact-box i {
