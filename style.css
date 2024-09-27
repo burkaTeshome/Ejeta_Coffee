@@ -519,3 +519,53 @@ h4 {
     width: 40px;
     height: 40px;
 }
+
+
+
+
+.delivery-card {
+    background-color: #222; /* Elegant black background */
+    color: #fff; /* White text for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 40px;
+}
+
+.delivery-card h4 {
+    font-size: 1.5rem;
+    color: #FFD700; /* Gold color for the heading */
+    margin-bottom: 15px;
+}
+
+.delivery-card p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.delivery-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.contact-box {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 250px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.contact-box i {
+    color: #FFD700; /* Gold color for phone icons */
+    font-size: 1.2rem;
+}
+
+.contact-box:hover {
+    background-color: #444; /* Slight hover effect for a professional touch */
+}
