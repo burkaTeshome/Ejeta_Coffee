@@ -529,6 +529,7 @@ h4 {
     padding: 20px;
     border-radius: 8px;
     margin-top: 40px;
+    align-items: center;
 }
 
 .delivery-card h4 {
@@ -546,6 +547,7 @@ h4 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
 }
 
 .contact-box {
